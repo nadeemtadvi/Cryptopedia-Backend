@@ -16,13 +16,13 @@ const Register = async (req, res) => {
     const existUser = await UserModel.findOne({ email });
 
     if (existUser) {
-      return res.status(303).json({
+      return res.status(409).json({
         success: false,
         message: "User alresdy exist pls login",
       });
     }
-    const imagePath = req.file.filename;
-    const hashpassword = await bcrypt.hashSync(password, 10);
+    const imagePath = req.file ? req.file.filename : "defaultProfile.jpg";
+    const hashpassword = await bcrypt.hash(password, 10);
     const NewUser = new UserModel({
       FullName,
       email,
@@ -31,7 +31,7 @@ const Register = async (req, res) => {
     });
     await NewUser.save();
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "User Register succesfull",
       user: NewUser,
