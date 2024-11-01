@@ -22,7 +22,7 @@ const Register = async (req, res) => {
       });
     }
     const imagePath = req.file ? req.file.filename : "defaultProfile.jpg";
-    const hashpassword = await bcrypt.hash(password, 10);
+    const hashpassword = await bcrypt.hashSync(password, 10);
     const NewUser = new UserModel({
       FullName,
       email,
